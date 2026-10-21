@@ -120,9 +120,25 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
+        /* Galeri Fotoğraf Çerçeveleri */
+        .gallery-card {
+            background: rgba(15, 3, 13, 0.6);
+            border: 1px solid rgba(244, 63, 94, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(251, 191, 36, 0.7);
+            box-shadow: 0 10px 25px rgba(244, 63, 94, 0.4);
+        }
+
         /* Özel Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: rgba(23, 1, 14, 0.8);
@@ -238,18 +254,90 @@
         </div>
     </div>
 
-    <!-- ================= FINAL OVERLAY / KUTLAMA PENCERESİ ================= -->
-    <div id="finalModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 opacity-0 transition-opacity duration-700">
-        <div class="card-glass p-8 sm:p-12 rounded-3xl max-w-lg w-full text-center border-2 border-rose-500/60 shadow-2xl transform scale-90 transition-transform duration-500" id="modalContent">
-            <div class="text-7xl text-rose-500 mb-6 animate-bounce">
+    <!-- ================= FINAL OVERLAY / KUTLAMA PENCERESİ & KAMP GALERİSİ ================= -->
+    <div id="finalModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl hidden items-center justify-center z-50 p-4 sm:p-6 opacity-0 transition-opacity duration-700 overflow-y-auto">
+        <div class="card-glass p-6 sm:p-10 rounded-3xl max-w-3xl w-full text-center border-2 border-rose-500/60 shadow-2xl transform scale-90 transition-transform duration-500 my-auto" id="modalContent">
+            <div class="text-6xl text-rose-500 mb-4 animate-bounce">
                 ❤️
             </div>
-            <h3 class="font-cursive text-5xl sm:text-7xl text-rose-200 glow-text-pink mb-6">
+            <h3 class="font-cursive text-5xl sm:text-6xl text-rose-200 glow-text-pink mb-2">
                 Seni seviyorum bir tanem! ❤️✨
             </h3>
-            <p class="font-serif-romantic text-2xl text-rose-100 italic mb-8 leading-relaxed">
-                İyi ki hayatımdasın Elif... Birlikte yazacağımız daha çok güzel günlerimiz var.
+            <p class="font-serif-romantic text-xl sm:text-2xl text-rose-100 italic mb-6 leading-relaxed">
+                İyi ki hayatımdasın Elif... Birlikte sonsuzluğa, sadakatle ve sevgiyle adım atacağımız kamp ateşleri gibi sıcak daha çok günümüz var. ⛺🔥✨
             </p>
+
+            <!-- KAMP & SONSUZ SEVGİ FOTOĞRAF GALERİSİ (Repten Yüklenen Görseller) -->
+            <div class="mb-8 pt-4 border-t border-rose-500/30">
+                <div class="flex items-center justify-center gap-2 text-rose-300 font-cursive text-3xl mb-4">
+                    <i class="fa-solid fa-campground text-amber-400"></i>
+                    <span>Anılarımız &amp; Geleceğimiz</span>
+                    <i class="fa-solid fa-infinity text-rose-400"></i>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 max-h-[45vh] overflow-y-auto p-2">
+                    <!-- foto.jpg -->
+                    <div class="gallery-card group">
+                        <div class="relative overflow-hidden aspect-square">
+                            <img src="foto.jpg" alt="Fotoğraf" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 justify-center">
+                                <span class="text-xs text-amber-200 font-serif-romantic italic"><i class="fa-solid fa-fire text-amber-400 mr-1"></i>Sıcaklığımız</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- foto1.jpg -->
+                    <div class="gallery-card group">
+                        <div class="relative overflow-hidden aspect-square">
+                            <img src="foto1.jpg" alt="Fotoğraf 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 justify-center">
+                                <span class="text-xs text-amber-200 font-serif-romantic italic"><i class="fa-solid fa-heart text-rose-400 mr-1"></i>Sevginle</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- foto2.jpg -->
+                    <div class="gallery-card group">
+                        <div class="relative overflow-hidden aspect-square">
+                            <img src="foto2.jpg" alt="Fotoğraf 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 justify-center">
+                                <span class="text-xs text-amber-200 font-serif-romantic italic"><i class="fa-solid fa-infinity text-purple-400 mr-1"></i>Sonsuzluk</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- foto3.jpg -->
+                    <div class="gallery-card group">
+                        <div class="relative overflow-hidden aspect-square">
+                            <img src="foto3.jpg" alt="Fotoğraf 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 justify-center">
+                                <span class="text-xs text-amber-200 font-serif-romantic italic"><i class="fa-solid fa-shield-halved text-emerald-400 mr-1"></i>Sadakat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- foto4.jpg -->
+                    <div class="gallery-card group">
+                        <div class="relative overflow-hidden aspect-square">
+                            <img src="foto4.jpg" alt="Fotoğraf 4" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 justify-center">
+                                <span class="text-xs text-amber-200 font-serif-romantic italic"><i class="fa-solid fa-moon text-indigo-300 mr-1"></i>Gece Yıldızlar Altında</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- foto5.jpg -->
+                    <div class="gallery-card group">
+                        <div class="relative overflow-hidden aspect-square">
+                            <img src="foto5.jpg" alt="Fotoğraf 5" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 justify-center">
+                                <span class="text-xs text-amber-200 font-serif-romantic italic"><i class="fa-solid fa-handshake-angle text-rose-300 mr-1"></i>Birlikte Her Şeye</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <button onclick="restartExperience()" class="text-xs text-rose-400 hover:text-rose-200 underline cursor-pointer">
                 Sürprizi Baştan Yaşa
             </button>
