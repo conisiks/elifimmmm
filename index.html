@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Bir Sözüm Var ❤️ Elif</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600;1,700&family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,500;1,300&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* Font Tanımlamaları */
+        .font-cursive { font-family: 'Great Vibes', cursive; }
+        .font-handwriting { font-family: 'Dancing Script', cursive; }
+        .font-serif-romantic { font-family: 'Cormorant Garamond', serif; }
+        .font-sans-clean { font-family: 'Montserrat', sans-serif; }
+
+        /* Romantik, Derin Crimson ve Gece Moru Arka Plan */
+        body {
+            background: radial-gradient(circle at center, #3b0764 0%, #2e0219 40%, #17010e 80%, #090005 100%);
+            min-height: 100vh;
+            color: #fce7f3;
+            overflow-x: hidden;
+        }
+
+        /* Canvas Efekt Katmanları */
+        #effectsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Işıltılı Glow ve Parıltı Efektleri */
+        .glow-text-pink {
+            text-shadow: 0 0 15px rgba(244, 63, 94, 0.7), 0 0 30px rgba(217, 70, 239, 0.5), 0 0 45px rgba(236, 72, 153, 0.3);
+        }
+
+        .glow-text-gold {
+            text-shadow: 0 0 12px rgba(251, 191, 36, 0.6), 0 0 25px rgba(245, 158, 11, 0.4);
+        }
+
+        /* Lüks Glassmorphism Kart Stili */
+        .card-glass {
+            background: rgba(30, 7, 26, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 0 25px rgba(236, 72, 153, 0.15);
+        }
+
+        /* Akıcı Sayfa Geçiş Animasyonları */
+        .screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(25px) scale(0.98);
+            z-index: 10;
+        }
+
+        .screen.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Buton Stilleri ve Animasyonlar */
+        .btn-romantic {
+            background: linear-gradient(135deg, #e11d48 0%, #c026d3 100%);
+            box-shadow: 0 0 25px rgba(225, 29, 72, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-romantic:hover {
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 0 0 40px rgba(244, 63, 94, 0.8);
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-green:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 0 40px rgba(16, 185, 129, 0.9);
+        }
+
+        .btn-red {
+            background: linear-gradient(135deg, #dc2626 0%, #f43f5e 100%);
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.5);
+        }
+
+        .btn-red:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 0 0 40px rgba(244, 63, 94, 0.9);
+        }
+
+        /* Müzik Durum Bilgisi Indicator */
+        .music-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 50;
+            background: rgba(23, 1, 14, 0.8);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 8px 18px;
+            border-radius: 9999px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Özel Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(23, 1, 14, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(244, 63, 94, 0.6);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 relative font-sans-clean select-none">
+
+    <!-- Yağmur ve Uçuşan Kalpler Canvas Katmanı -->
+    <canvas id="effectsCanvas"></canvas>
+
+    <!-- Müzik Elemanları -->
+    <!-- Sayfa Başından İtibaren Çalan Müzik -->
+    <audio id="sarkiAudio" loop preload="auto">
+        <source src="sarki.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Son Sayfada "EVET"e Basılınca Başlayan Müzik -->
+    <audio id="sarki1Audio" loop preload="auto">
+        <source src="sarki1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Müzik Durum Göstergesi -->
+    <div id="musicStatus" class="music-indicator flex items-center gap-2 text-xs text-rose-300">
+        <i class="fa-solid fa-compact-disc animate-spin text-rose-400"></i>
+        <span id="musicText">Müzik Hazır (Sayfaya Dokunun)</span>
+    </div>
+
+    <!-- ================= AŞAMA 1: GİRİŞ / MAJESTİK DOKUNUŞ ================= -->
+    <div id="screen1" class="screen active flex-col items-center justify-center text-center max-w-2xl w-full p-8 sm:p-12 rounded-3xl card-glass my-auto">
+        <div class="mb-6 text-rose-400 text-4xl animate-pulse">
+            <i class="fa-solid fa-crown"></i>
+        </div>
+        
+        <h1 class="font-serif-romantic italic text-3xl sm:text-5xl font-semibold mb-10 leading-relaxed text-rose-100 glow-text-pink">
+            "Bugün bizim için özel bir gün ve sana bir şey söylemem gerekiyor..."
+        </h1>
+
+        <button onclick="goToScreen2()" class="btn-romantic px-10 py-4 rounded-full text-lg sm:text-xl font-medium text-white tracking-wide cursor-pointer flex items-center gap-3 group">
+            <span>Sorabilirsin</span>
+            <i class="fa-solid fa-heart text-rose-200 group-hover:scale-125 transition-transform duration-300"></i>
+        </button>
+    </div>
+
+    <!-- ================= AŞAMA 2: SÖZ VERME & GELECEK ================= -->
+    <div id="screen2" class="screen flex-col items-center justify-center max-w-3xl w-full p-6 sm:p-10 rounded-3xl card-glass my-auto my-6">
+        <div class="text-center mb-6">
+            <span class="font-cursive text-5xl sm:text-6xl text-rose-400 glow-text-gold">Sevgilim Elif'e...</span>
+        </div>
+
+        <div class="font-serif-romantic italic text-lg sm:text-2xl text-rose-100 leading-relaxed text-justify sm:text-center space-y-4 mb-8 max-h-[60vh] overflow-y-auto pr-2">
+            <p class="transition-opacity duration-1000">
+                Evet Elif. Birbirimize vermemiz gereken bazı sözler var. Hastalıkta, sağlıkta, iyi günde, kötü günde, zorlukta, kolaylıkta birbirimizin elini bırakmamaya; gerektiğinde beraber gülelim, gerektiğinde beraber ağlayalım ama her ne olursa olsun gün sonunda bir aile olarak kalalım ve birbirimize sahip çıkalım.
+            </p>
+            <p class="mt-4">
+                Gözlerimizi birbirimizden başkasını görmesin, kalbimizde birbirimize ait hep özel bir yer olsun. Sevgimizi hiçbir şeye değişmeyelim. Geçmişte yaşadıklarımızdan ders alıp bu sefer daha sağlam bir ilişki kuralım.
+            </p>
+            <p class="mt-4 text-rose-200 font-bold">
+                Ben sadece bu günleri değil, geleceğimi de paylaşmak istiyorum ve bu düşüncelerimin arkasındayım. Tıpkı sana olan sevgim gibi bu sözlere sahip çıkacağıma söz veriyorum. Sen de söz veriyorsan benimle kalplerimizi yeniden birbirimize emanet etmek ister misin?
+            </p>
+        </div>
+
+        <div class="text-center pt-2">
+            <button onclick="goToScreen3()" class="btn-romantic px-10 py-4 rounded-full text-lg sm:text-xl font-medium text-white tracking-wide cursor-pointer flex items-center gap-3 mx-auto group">
+                <span>Devam Et</span>
+                <i class="fa-solid fa-sparkles text-yellow-300 group-hover:rotate-12 transition-transform duration-300"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= AŞAMA 3: BÜYÜK SORU & KUTLAMA ================= -->
+    <div id="screen3" class="screen flex-col items-center justify-center text-center max-w-2xl w-full p-8 sm:p-12 rounded-3xl card-glass my-auto">
+        <div class="mb-6 text-rose-500 text-5xl animate-bounce">
+            <i class="fa-solid fa-heart-pulse"></i>
+        </div>
+
+        <h2 class="font-cursive text-5xl sm:text-7xl font-bold mb-12 text-rose-300 glow-text-pink">
+            Benimle çıkar mısın?
+        </h2>
+
+        <!-- İki Adet EVET Butonu -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-md mx-auto">
+            <button onclick="celebrateLove()" class="btn-green w-full sm:w-1/2 py-4 rounded-2xl text-xl font-bold text-white cursor-pointer flex items-center justify-center gap-2 transition-all">
+                <i class="fa-solid fa-check-circle"></i>
+                <span>EVET</span>
+            </button>
+
+            <button onclick="celebrateLove()" class="btn-red w-full sm:w-1/2 py-4 rounded-2xl text-xl font-bold text-white cursor-pointer flex items-center justify-center gap-2 transition-all">
+                <i class="fa-solid fa-heart"></i>
+                <span>EVET</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= FINAL OVERLAY / KUTLAMA PENCERESİ ================= -->
+    <div id="finalModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden items-center justify-center z-50 p-4 opacity-0 transition-opacity duration-700">
+        <div class="card-glass p-8 sm:p-12 rounded-3xl max-w-lg w-full text-center border-2 border-rose-500/60 shadow-2xl transform scale-90 transition-transform duration-500" id="modalContent">
+            <div class="text-7xl text-rose-500 mb-6 animate-bounce">
+                ❤️
+            </div>
+            <h3 class="font-cursive text-5xl sm:text-7xl text-rose-200 glow-text-pink mb-6">
+                Seni seviyorum bir tanem! ❤️✨
+            </h3>
+            <p class="font-serif-romantic text-2xl text-rose-100 italic mb-8 leading-relaxed">
+                İyi ki hayatımdasın Elif... Birlikte yazacağımız daha çok güzel günlerimiz var.
+            </p>
+            <button onclick="restartExperience()" class="text-xs text-rose-400 hover:text-rose-200 underline cursor-pointer">
+                Sürprizi Baştan Yaşa
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript Mantığı: Ses, Canvas, Efektler -->
+    <script>
+        /* -------------------------------------------------------------
+           1. CANVAS ANIMASYONU (Yağmur + Uçuşan Kalpler)
+        ------------------------------------------------------------- */
+        const canvas = document.getElementById('effectsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Yağmur Damlaları
+        const raindrops = [];
+        const dropCount = Math.floor(window.innerWidth / 12);
+        for (let i = 0; i < dropCount; i++) {
+            raindrops.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                length: Math.random() * 18 + 10,
+                speed: Math.random() * 3 + 2.5,
+                opacity: Math.random() * 0.35 + 0.1,
+                width: Math.random() * 1.2 + 0.5
+            });
+        }
+
+        // Yükselen İşıltılı Kalpler
+        const floatingHearts = [];
+        const heartCount = Math.floor(window.innerWidth / 25);
+        for (let i = 0; i < heartCount; i++) {
+            floatingHearts.push({
+                x: Math.random() * canvas.width,
+                y: canvas.height + Math.random() * 200,
+                size: Math.random() * 14 + 8,
+                speed: Math.random() * 1.5 + 0.8,
+                opacity: Math.random() * 0.6 + 0.2,
+                swing: Math.random() * 2,
+                swingSpeed: Math.random() * 0.02 + 0.01
+            });
+        }
+
+        function drawHeart(x, y, size, opacity) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(244, 63, 94, ${opacity})`;
+            ctx.shadowColor = 'rgba(236, 72, 153, 0.8)';
+            ctx.shadowBlur = 10;
+            const topCurveHeight = size * 0.3;
+            ctx.moveTo(x, y + topCurveHeight);
+            ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+            ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + size, x, y + size);
+            ctx.bezierCurveTo(x, y + size, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+            ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function renderEffects() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Yağmur Çizimi
+            for (let i = 0; i < raindrops.length; i++) {
+                const drop = raindrops[i];
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x, drop.y + drop.length);
+                ctx.strokeStyle = `rgba(244, 114, 182, ${drop.opacity})`;
+                ctx.lineWidth = drop.width;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                drop.y += drop.speed;
+                if (drop.y > canvas.height) {
+                    drop.y = -drop.length;
+                    drop.x = Math.random() * canvas.width;
+                }
+            }
+
+            // Uçuşan Kalp Çizimi
+            for (let i = 0; i < floatingHearts.length; i++) {
+                const heart = floatingHearts[i];
+                heart.swing += heart.swingSpeed;
+                const currentX = heart.x + Math.sin(heart.swing) * 20;
+
+                drawHeart(currentX, heart.y, heart.size, heart.opacity);
+
+                heart.y -= heart.speed;
+                if (heart.y < -30) {
+                    heart.y = canvas.height + 30;
+                    heart.x = Math.random() * canvas.width;
+                }
+            }
+
+            requestAnimationFrame(renderEffects);
+        }
+        renderEffects();
+
+        /* -------------------------------------------------------------
+           2. SES & MÜZİK YÖNETİMİ
+        ------------------------------------------------------------- */
+        const sarkiAudio = document.getElementById('sarkiAudio');
+        const sarki1Audio = document.getElementById('sarki1Audio');
+        const musicStatus = document.getElementById('musicStatus');
+        const musicText = document.getElementById('musicText');
+
+        let isSarkiStarted = false;
+
+        function startInitialMusic() {
+            if (!isSarkiStarted) {
+                sarkiAudio.play().then(() => {
+                    isSarkiStarted = true;
+                    musicText.innerText = "sarki.mp3 Çalıyor...";
+                }).catch(err => {
+                    console.log("Otomatik oynatma kısıtlaması, tıklama bekleniyor.");
+                });
+            }
+        }
+
+        // Sayfaya ilk tıklamada sarki.mp3 başlatmayı dener
+        window.addEventListener('click', startInitialMusic, { once: true });
+        window.addEventListener('touchstart', startInitialMusic, { once: true });
+
+        /* -------------------------------------------------------------
+           3. EKRAN GEÇİŞLERİ
+        ------------------------------------------------------------- */
+        function switchScreen(fromId, toId) {
+            const current = document.getElementById(fromId);
+            const next = document.getElementById(toId);
+
+            current.style.opacity = '0';
+            current.style.transform = 'translateY(-25px) scale(0.98)';
+
+            setTimeout(() => {
+                current.classList.remove('active');
+                next.classList.add('active');
+                
+                setTimeout(() => {
+                    next.style.opacity = '1';
+                    next.style.transform = 'translateY(0) scale(1)';
+                }, 50);
+            }, 600);
+        }
+
+        function goToScreen2() {
+            startInitialMusic();
+            switchScreen('screen1', 'screen2');
+        }
+
+        function goToScreen3() {
+            startInitialMusic();
+            switchScreen('screen2', 'screen3');
+        }
+
+        /* -------------------------------------------------------------
+           4. "EVET" BUTONU & KUTLAMA EFEKTİ
+        ------------------------------------------------------------- */
+        function celebrateLove() {
+            // 1. sarki.mp3'ü durdur
+            sarkiAudio.pause();
+            sarkiAudio.currentTime = 0;
+
+            // 2. sarki1.mp3'ü sıfırdan başlat
+            sarki1Audio.play().then(() => {
+                musicText.innerText = "sarki1.mp3 Çalıyor ❤️";
+            }).catch(err => {
+                console.log("sarki1.mp3 çalma hatası:", err);
+            });
+
+            // 3. Final Modal Aç
+            const modal = document.getElementById('finalModal');
+            const modalContent = document.getElementById('modalContent');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            setTimeout(() => {
+                modal.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            }, 50);
+
+            // 4. Kalp ve Konfeti Patlaması
+            const duration = 6 * 1000;
+            const animationEnd = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 4,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0 },
+                    colors: ['#f43f5e', '#ec4899', '#d946ef', '#f59e0b']
+                });
+                confetti({
+                    particleCount: 4,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1 },
+                    colors: ['#f43f5e', '#ec4899', '#d946ef', '#f59e0b']
+                });
+
+                if (Date.now() < animationEnd) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
+        function restartExperience() {
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
