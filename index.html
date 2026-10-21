@@ -138,6 +138,23 @@
     <!-- Yağmur ve Uçuşan Kalpler Canvas Katmanı -->
     <canvas id="effectsCanvas"></canvas>
 
+    <!-- Müzik İzni Uyarısı (Başlangıç Overlay) -->
+    <div id="audioNoticeModal" class="fixed inset-0 bg-black/90 backdrop-blur-xl flex items-center justify-center z-50 p-4 transition-opacity duration-700">
+        <div class="card-glass p-8 sm:p-10 rounded-3xl max-w-md w-full text-center border border-rose-500/50 shadow-2xl">
+            <div class="text-5xl text-rose-400 mb-4 animate-bounce">
+                <i class="fa-solid fa-music"></i>
+            </div>
+            <h2 class="font-cursive text-4xl text-rose-200 glow-text-pink mb-3">Hoş Geldin... ❤️</h2>
+            <p class="font-serif-romantic text-xl text-rose-100 italic mb-8 leading-relaxed">
+                Müziğin ve arka plan atmosferinin başlaması için lütfen ekrana dokunun veya butona basın.
+            </p>
+            <button onclick="dismissAudioNotice()" class="btn-romantic px-8 py-3.5 rounded-full text-lg font-medium text-white cursor-pointer mx-auto flex items-center gap-2">
+                <span>Tamam</span>
+                <i class="fa-solid fa-heart text-rose-200"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Müzik Elemanları -->
     <!-- Sayfa Başından İtibaren Çalan Müzik -->
     <audio id="sarkiAudio" loop preload="auto">
@@ -152,7 +169,7 @@
     <!-- Müzik Durum Göstergesi -->
     <div id="musicStatus" class="music-indicator flex items-center gap-2 text-xs text-rose-300">
         <i class="fa-solid fa-compact-disc animate-spin text-rose-400"></i>
-        <span id="musicText">Müzik Hazır (Sayfaya Dokunun)</span>
+        <span id="musicText">Müzik Hazır</span>
     </div>
 
     <!-- ================= AŞAMA 1: GİRİŞ / MAJESTİK DOKUNUŞ ================= -->
@@ -179,7 +196,7 @@
 
         <div class="font-serif-romantic italic text-lg sm:text-2xl text-rose-100 leading-relaxed text-justify sm:text-center space-y-4 mb-8 max-h-[60vh] overflow-y-auto pr-2">
             <p class="transition-opacity duration-1000">
-                Evet Elif. Birbirimize vermemiz gereken bazı sözler var. Hastalıkta, sağlıkta, iyi günde, kötü günde, zorlukta, kolaylıkta birbirimizin elini bırakmamaya; gerektiğinde beraber gülelim, gerektiğinde beraber ağlayalım ama her ne olursa olsun gün sonunda bir aile olarak kalalım ve birbirimize sahip çıkalım.
+                Evet Elif. Birbirimize vermemiz gereken bazı sözler var. Hastalıkta, sağlıkta, iyi günde, kötü günde, zorlukta, kolaylıkta birbirimizin elini bırakmamaya; gerektiğinde beraber gülelim, gerektiğinde beraber ağlayalım ama her ne olursa olsun birbirimize sahip çıkalım.
             </p>
             <p class="mt-4">
                 Gözlerimizi birbirimizden başkasını görmesin, kalbimizde birbirimize ait hep özel bir yer olsun. Sevgimizi hiçbir şeye değişmeyelim. Geçmişte yaşadıklarımızdan ders alıp bu sefer daha sağlam bir ilişki kuralım.
@@ -268,7 +285,7 @@
             });
         }
 
-        // Yükselen İşıltılı Kalpler
+        // Yükselen Işıltılı Kalpler
         const floatingHearts = [];
         const heartCount = Math.floor(window.innerWidth / 25);
         for (let i = 0; i < heartCount; i++) {
@@ -347,6 +364,7 @@
         const sarki1Audio = document.getElementById('sarki1Audio');
         const musicStatus = document.getElementById('musicStatus');
         const musicText = document.getElementById('musicText');
+        const audioNoticeModal = document.getElementById('audioNoticeModal');
 
         let isSarkiStarted = false;
 
@@ -361,7 +379,15 @@
             }
         }
 
-        // Sayfaya ilk tıklamada sarki.mp3 başlatmayı dener
+        function dismissAudioNotice() {
+            startInitialMusic();
+            audioNoticeModal.style.opacity = '0';
+            setTimeout(() => {
+                audioNoticeModal.style.display = 'none';
+            }, 700);
+        }
+
+        // Dokunma veya tıklama ile müziği tetikleme
         window.addEventListener('click', startInitialMusic, { once: true });
         window.addEventListener('touchstart', startInitialMusic, { once: true });
 
