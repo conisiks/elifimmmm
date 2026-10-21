@@ -177,7 +177,7 @@
         <source src="sarki.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Son Sayfada "EVET"e Basılınca Başlayan Müzik -->
+    <!-- Son Sayfaya Geçildiğinde Çalan Müzik -->
     <audio id="sarki1Audio" loop preload="auto">
         <source src="sarki1.mp3" type="audio/mpeg">
     </audio>
@@ -267,7 +267,7 @@
                 İyi ki hayatımdasın Elif... Birlikte sonsuzluğa, sadakatle ve sevgiyle adım atacağımız kamp ateşleri gibi sıcak daha çok günümüz var. ⛺🔥✨
             </p>
 
-            <!-- KAMP & SONSUZ SEVGİ FOTOĞRAF GALERİSİ (Repten Yüklenen Görseller) -->
+            <!-- KAMP & SONSUZ SEVGİ FOTOĞRAF GALERİSİ -->
             <div class="mb-8 pt-4 border-t border-rose-500/30">
                 <div class="flex items-center justify-center gap-2 text-rose-300 font-cursive text-3xl mb-4">
                     <i class="fa-solid fa-campground text-amber-400"></i>
@@ -455,9 +455,10 @@
         const audioNoticeModal = document.getElementById('audioNoticeModal');
 
         let isSarkiStarted = false;
+        let isSarki1Playing = false;
 
         function startInitialMusic() {
-            if (!isSarkiStarted) {
+            if (!isSarkiStarted && !isSarki1Playing) {
                 sarkiAudio.play().then(() => {
                     isSarkiStarted = true;
                     musicText.innerText = "sarki.mp3 Çalıyor...";
@@ -465,6 +466,17 @@
                     console.log("Otomatik oynatma kısıtlaması, tıklama bekleniyor.");
                 });
             }
+        }
+
+        function playSarki1() {
+            isSarki1Playing = true;
+            sarkiAudio.pause();
+            sarkiAudio.currentTime = 0;
+            sarki1Audio.play().then(() => {
+                musicText.innerText = "sarki1.mp3 Çalıyor ❤️";
+            }).catch(err => {
+                console.log("sarki1.mp3 çalma hatası:", err);
+            });
         }
 
         function dismissAudioNotice() {
@@ -475,7 +487,7 @@
             }, 700);
         }
 
-        // Dokunma veya tıklama ile müziği tetikleme
+        // Dokunma veya tıklama ile ilk müziği tetikleme
         window.addEventListener('click', startInitialMusic, { once: true });
         window.addEventListener('touchstart', startInitialMusic, { once: true });
 
@@ -506,7 +518,8 @@
         }
 
         function goToScreen3() {
-            startInitialMusic();
+            // Screen 3 (Benimle çıkar mısın / EVET butonları) açıldığında sarki1.mp3 başlar
+            playSarki1();
             switchScreen('screen2', 'screen3');
         }
 
@@ -514,18 +527,12 @@
            4. "EVET" BUTONU & KUTLAMA EFEKTİ
         ------------------------------------------------------------- */
         function celebrateLove() {
-            // 1. sarki.mp3'ü durdur
-            sarkiAudio.pause();
-            sarkiAudio.currentTime = 0;
+            // Garanti olması açısından sarki1.mp3'ün çaldığından emin olunur
+            if (!isSarki1Playing || sarki1Audio.paused) {
+                playSarki1();
+            }
 
-            // 2. sarki1.mp3'ü sıfırdan başlat
-            sarki1Audio.play().then(() => {
-                musicText.innerText = "sarki1.mp3 Çalıyor ❤️";
-            }).catch(err => {
-                console.log("sarki1.mp3 çalma hatası:", err);
-            });
-
-            // 3. Final Modal Aç
+            // Final Modal Aç
             const modal = document.getElementById('finalModal');
             const modalContent = document.getElementById('modalContent');
 
@@ -537,7 +544,7 @@
                 modalContent.style.transform = 'scale(1)';
             }, 50);
 
-            // 4. Kalp ve Konfeti Patlaması
+            // Kalp ve Konfeti Patlaması
             const duration = 6 * 1000;
             const animationEnd = Date.now() + duration;
 
